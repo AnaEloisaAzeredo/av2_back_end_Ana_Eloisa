@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineStream - Catálogo de Filmes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+    <link rel="preconnect" href="https://fonts.gstatic.com&quot; crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap&quot; rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <h1>🎬 CineStream</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-link active" data-section="home">Home</a>
+                <a href="#" class="nav-link" data-section="catalogo">Catálogo</a>
+                <a href="#" class="nav-link" data-section="favoritos">Meus Favoritos</a>
+            </nav>
+            <div class="user-section">
+                <div class="user-selector" id="userSelector">
+                    <span class="user-icon">👤</span>
+                    <select id="userSelect" class="user-select">
+                        <option value="">Selecionar Usuário</option>
+                    </select>
+                </div>
+                <button id="newUserBtn" class="btn btn-outline">+ Novo Usuário</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home-section" class="section active">
+            <div class="hero">
+                <div class="container">
+                    <div class="hero-content">
+                        <h2>Descubra o Melhor do Cinema</h2>
+                        <p>Explore nossa coleção de filmes e crie sua lista personalizada de favoritos</p>
+                        <div class="hero-stats">
+                            <div class="stat-card">
+                                <span class="stat-number" id="totalMovies">0</span>
+                                <span class="stat-label">Filmes</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number" id="totalUsers">0</span>
+                                <span class="stat-label">Usuários</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number" id="totalFavorites">0</span>
+                                <span class="stat-label">Favoritos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="featured-section">
+                    <h3>Filmes em Destaque</h3>
+                    <div class="movie-grid" id="featuredMovies"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catálogo Section -->
+        <section id="catalogo-section" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Catálogo Completo</h2>
+                    <div class="filters">
+                        <input type="text" id="searchInput" placeholder="🔍 Buscar filmes..." class="search-input">
+                        <select id="genreFilter" class="filter-select">
+                            <option value="">Todos os Gêneros</option>
+                            <option value="Ação">Ação</option>
+                            <option value="Comédia">Comédia</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Ficção Científica">Ficção Científica</option>
+                            <option value="Terror">Terror</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Aventura">Aventura</option>
+                            <option value="Animação">Animação</option>
+                        </select>
+                        <button id="addMovieBtn" class="btn btn-primary">+ Novo Filme</button>
+                    </div>
+                </div>
+                <div class="movie-grid" id="allMovies"></div>
+                <div id="noResults" class="no-results" style="display: none;">
+                    <p>😕 Nenhum filme encontrado</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Favoritos Section -->
+        <section id="favoritos-section" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Meus Favoritos</h2>
+                    <p id="favoritesUserInfo" class="user-info-text">Selecione um usuário para ver seus favoritos</p>
+                </div>
+                <div class="movie-grid" id="favoritesGrid"></div>
+                <div id="noFavorites" class="no-results" style="display: none;">
+                    <p>⭐ Nenhum filme favoritado ainda</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Filme -->
+    <div id="movieModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <div class="movie-detail">
+                    <div class="movie-detail-header">
+                        <h2 id="modalTitle"></h2>
+                        <span class="movie-genre" id="modalGenre"></span>
+                    </div>
+                    <div class="movie-detail-info">
+                        <p><strong>Diretor:</strong> <span id="modalDirector"></span></p>
+                        <p><strong>Ano:</strong> <span id="modalYear"></span></p>
+                        <p><strong>Duração:</strong> <span id="modalDuration"></span> minutos</p>
+                        <p><strong>Cadastrado em:</strong> <span id="modalDate"></span></p>
+                    </div>
+                    <div class="movie-actions">
+                        <button id="modalFavoriteBtn" class="btn btn-favorite">
+                            <span class="favorite-icon">⭐</span>
+                            <span id="modalFavoriteText">Adicionar aos Favoritos</span>
+                        </button>
+                        <button id="modalEditBtn" class="btn btn-secondary">✏️ Editar</button>
+                        <button id="modalDeleteBtn" class="btn btn-danger">🗑️ Excluir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Formulário -->
+    <div id="formModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <h2 id="formTitle">Novo Filme</h2>
+                <form id="movieForm">
+                    <input type="hidden" id="movieId">
+                    <div class="form-group">
+                        <label for="titulo">Título *</label>
+                        <input type="text" id="titulo" required placeholder="Nome do filme">
+                    </div>
+                    <div class="form-group">
+                        <label for="diretor">Diretor</label>
+                        <input type="text" id="diretor" placeholder="Nome do diretor">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ano">Ano</label>
+                            <input type="number" id="ano" placeholder="Ano de lançamento" min="1900" max="2030">
+                        </div>
+                        <div class="form-group">
+                            <label for="duracao">Duração (min)</label>
+                            <input type="number" id="duracao" placeholder="Duração em minutos" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="genero">Gênero</label>
+                        <select id="genero">
+                            <option value="">Selecione um gênero</option>
+                            <option value="Ação">Ação</option>
+                            <option value="Comédia">Comédia</option>
+                            <option value="Drama">Drama</option>
+                            <option value="Ficção Científica">Ficção Científica</option>
+                            <option value="Terror">Terror</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Aventura">Aventura</option>
+                            <option value="Animação">Animação</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">💾 Salvar</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeFormModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
